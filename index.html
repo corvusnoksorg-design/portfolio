@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noks | AI Automation Engineer</title>
+  <meta
+    name="description"
+    content="Noks builds AI systems, workflow automations, voice AI receptionists, and full-stack apps for Upwork clients."
+  />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: "#0A0A0A",
+            panel: "#111111",
+            line: "rgba(255,255,255,0.08)",
+            cyan: "#00D4FF",
+            teal: "#06B6D4",
+            mint: "#6EE7B7",
+            slateGlow: "#11212A"
+          },
+          fontFamily: {
+            sans: ["Sora", "ui-sans-serif", "system-ui", "sans-serif"]
+          },
+          boxShadow: {
+            glow: "0 0 0 1px rgba(0,212,255,0.18), 0 20px 60px rgba(0,212,255,0.14)"
+          },
+          animation: {
+            float: "float 5s ease-in-out infinite",
+            pulseSoft: "pulseSoft 3s ease-in-out infinite",
+            drift: "drift 18s linear infinite"
+          },
+          keyframes: {
+            float: {
+              "0%, 100%": { transform: "translateY(0px)" },
+              "50%": { transform: "translateY(-10px)" }
+            },
+            pulseSoft: {
+              "0%, 100%": { opacity: "0.55", transform: "scale(1)" },
+              "50%": { opacity: "1", transform: "scale(1.06)" }
+            },
+            drift: {
+              "0%": { transform: "translate3d(0,0,0)" },
+              "50%": { transform: "translate3d(20px,-30px,0)" },
+              "100%": { transform: "translate3d(0,0,0)" }
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(0, 212, 255, 0.12), transparent 28%),
+        radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.15), transparent 22%),
+        radial-gradient(circle at bottom right, rgba(110, 231, 183, 0.08), transparent 20%),
+        #0a0a0a;
+    }
+
+    .grid-overlay::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(circle at center, black, transparent 80%);
+      pointer-events: none;
+    }
+
+    .mesh {
+      filter: blur(48px);
+      opacity: 0.6;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(0,212,255,0.55) 35%, rgba(0,212,255,0) 75%);
+      pointer-events: none;
+    }
+
+    .nav-scrolled {
+      background: rgba(10, 10, 10, 0.72);
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.28);
+    }
+  </style>
+</head>
+<body class="font-sans text-white selection:bg-cyan/30 selection:text-white">
+  <header id="top" class="fixed inset-x-0 top-0 z-50 transition-all duration-300">
+    <div id="navbar" class="mx-auto mt-4 flex w-[92%] max-w-7xl items-center justify-between rounded-full border border-transparent px-4 py-3 backdrop-blur-xl md:px-6">
+      <a href="#top" class="text-lg font-bold tracking-wide text-white">⚡ Noks</a>
+      <nav class="hidden items-center gap-8 text-sm text-white/70 md:flex">
+        <a href="#about" class="transition hover:text-cyan">About</a>
+        <a href="#services" class="transition hover:text-cyan">Services</a>
+        <a href="#projects" class="transition hover:text-cyan">Projects</a>
+        <a href="#contact" class="transition hover:text-cyan">Contact</a>
+      </nav>
+      <div class="hidden md:block">
+        <a href="https://www.upwork.com" target="_blank" rel="noreferrer" class="rounded-full bg-cyan px-5 py-3 text-sm font-semibold text-ink transition hover:scale-[1.02] hover:bg-white">
+          Hire Me on Upwork
+        </a>
+      </div>
+      <button id="menuButton" aria-label="Toggle menu" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-xl md:hidden">
+        ☰
+      </button>
+    </div>
+    <div id="mobileMenu" class="mx-auto mt-3 hidden w-[92%] max-w-7xl rounded-3xl border border-white/10 bg-black/80 p-4 backdrop-blur-2xl md:hidden">
+      <div class="flex flex-col gap-2 text-sm text-white/75">
+        <a href="#about" class="rounded-2xl px-4 py-3 transition hover:bg-white/5 hover:text-cyan">About</a>
+        <a href="#services" class="rounded-2xl px-4 py-3 transition hover:bg-white/5 hover:text-cyan">Services</a>
+        <a href="#projects" class="rounded-2xl px-4 py-3 transition hover:bg-white/5 hover:text-cyan">Projects</a>
+        <a href="#contact" class="rounded-2xl px-4 py-3 transition hover:bg-white/5 hover:text-cyan">Contact</a>
+        <a href="https://www.upwork.com" target="_blank" rel="noreferrer" class="mt-2 rounded-2xl bg-cyan px-4 py-3 text-center font-semibold text-ink">
+          Hire Me on Upwork
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="relative flex min-h-screen items-center overflow-hidden">
+      <div class="grid-overlay absolute inset-0"></div>
+      <div class="mesh absolute left-[-8%] top-[12%] h-72 w-72 rounded-full bg-cyan/30 animate-drift"></div>
+      <div class="mesh absolute right-[4%] top-[20%] h-60 w-60 rounded-full bg-teal/20 animate-pulseSoft"></div>
+      <div class="mesh absolute bottom-[8%] left-[35%] h-72 w-72 rounded-full bg-mint/10 animate-drift"></div>
+      <div id="particles" class="absolute inset-0 overflow-hidden"></div>
+
+      <div class="relative mx-auto flex w-[92%] max-w-7xl flex-col justify-center pt-32 pb-16">
+        <div class="reveal max-w-4xl">
+          <div class="mb-8 inline-flex animate-float items-center gap-3 rounded-full border border-cyan/30 bg-cyan/10 px-4 py-2 text-sm text-cyan shadow-glow">
+            <span class="h-2.5 w-2.5 rounded-full bg-mint"></span>
+            Available for work ✅
+          </div>
+          <p class="mb-5 text-sm uppercase tracking-[0.35em] text-cyan/80">AI Automation Engineer · Bosnia and Herzegovina</p>
+          <h1 class="max-w-5xl text-5xl font-extrabold leading-[0.95] tracking-tight text-white sm:text-6xl lg:text-8xl">
+            I Build AI Systems That Work While You Sleep
+          </h1>
+          <p class="mt-6 max-w-3xl text-base text-white/68 sm:text-lg">
+            n8n automation · Voice AI Receptionists · Claude Code · Full-Stack Apps
+          </p>
+          <div class="mt-10 flex flex-col gap-4 sm:flex-row">
+            <a href="#projects" class="rounded-full bg-cyan px-7 py-4 text-center font-semibold text-ink transition hover:scale-[1.02] hover:bg-white">
+              View My Work
+            </a>
+            <a href="https://www.upwork.com" target="_blank" rel="noreferrer" class="rounded-full border border-white/15 bg-white/5 px-7 py-4 text-center font-semibold text-white transition hover:border-cyan/40 hover:text-cyan">
+              Hire Me on Upwork
+            </a>
+          </div>
+        </div>
+
+        <div class="reveal mt-16 grid gap-4 rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl sm:grid-cols-3">
+          <div>
+            <p class="text-3xl font-bold text-cyan">50+</p>
+            <p class="mt-2 text-sm text-white/65">Automations Built</p>
+          </div>
+          <div>
+            <p class="text-3xl font-bold text-cyan">3+</p>
+            <p class="mt-2 text-sm text-white/65">Years Experience</p>
+          </div>
+          <div>
+            <p class="text-3xl font-bold text-cyan">10k+</p>
+            <p class="mt-2 text-sm text-white/65">Hours Saved for Clients</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="mx-auto w-[92%] max-w-7xl py-24">
+      <div class="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+        <div class="reveal">
+          <p class="mb-4 text-sm uppercase tracking-[0.35em] text-cyan/80">About Me</p>
+          <h2 class="max-w-xl text-3xl font-bold text-white sm:text-4xl">Premium AI automation for businesses that need results fast.</h2>
+          <p class="mt-6 max-w-2xl text-base leading-8 text-white/70">
+            I'm Noks, an AI automation engineer from Bosnia. I help businesses stop doing repetitive work by building smart automations, AI voice receptionists, and full-stack apps powered by the latest AI tools.
+          </p>
+          <div class="mt-10 rounded-[2rem] border border-white/10 bg-white/[0.03] p-6">
+            <p class="text-sm font-semibold uppercase tracking-[0.25em] text-white/55">Why work with me?</p>
+            <div class="mt-5 grid gap-3 text-sm text-white/70 sm:grid-cols-2">
+              <div class="rounded-2xl border border-white/10 bg-black/30 px-4 py-4">Fast delivery</div>
+              <div class="rounded-2xl border border-white/10 bg-black/30 px-4 py-4">Clean code</div>
+              <div class="rounded-2xl border border-white/10 bg-black/30 px-4 py-4">Always communicates</div>
+              <div class="rounded-2xl border border-white/10 bg-black/30 px-4 py-4">Results-focused</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.02] p-6 shadow-glow">
+          <p class="text-sm uppercase tracking-[0.35em] text-cyan/80">Toolbox</p>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <span class="rounded-full border border-cyan/20 bg-cyan/10 px-4 py-2 text-sm text-cyan">n8n</span>
+            <span class="rounded-full border border-teal/20 bg-teal/10 px-4 py-2 text-sm text-teal-200">Claude Code</span>
+            <span class="rounded-full border border-cyan/20 bg-cyan/10 px-4 py-2 text-sm text-cyan">VAPI</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/75">Supabase</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/75">Make.com</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/75">GoHighLevel</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/75">Lovable</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/75">Cursor</span>
+            <span class="rounded-full border border-cyan/20 bg-cyan/10 px-4 py-2 text-sm text-cyan">RAG Agents</span>
+            <span class="rounded-full border border-teal/20 bg-teal/10 px-4 py-2 text-sm text-teal-200">Voice AI</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="mx-auto w-[92%] max-w-7xl py-24">
+      <div class="reveal mb-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p class="mb-4 text-sm uppercase tracking-[0.35em] text-cyan/80">Services</p>
+          <h2 class="text-3xl font-bold text-white sm:text-4xl">Built for Upwork clients who want systems, not busywork.</h2>
+        </div>
+        <p class="max-w-xl text-sm leading-7 text-white/65">For small businesses, agencies, dentists, and service companies that want AI to save time and convert more leads.</p>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <article class="reveal group rounded-[2rem] border border-white/10 bg-panel p-7 transition duration-300 hover:-translate-y-1 hover:border-cyan/30 hover:shadow-glow">
+          <div class="text-3xl">🤖</div>
+          <h3 class="mt-6 text-xl font-semibold text-white">AI Workflow Automation</h3>
+          <p class="mt-4 text-sm leading-7 text-white/65">Connect your tools, eliminate manual work. I build n8n and Make.com flows that run 24/7.</p>
+          <a href="#contact" class="mt-8 inline-flex text-sm font-medium text-cyan transition group-hover:translate-x-1">Learn More →</a>
+        </article>
+        <article class="reveal group rounded-[2rem] border border-white/10 bg-panel p-7 transition duration-300 hover:-translate-y-1 hover:border-cyan/30 hover:shadow-glow">
+          <div class="text-3xl">🎙️</div>
+          <h3 class="mt-6 text-xl font-semibold text-white">Voice AI Receptionists</h3>
+          <p class="mt-4 text-sm leading-7 text-white/65">Never miss a call again. AI phone agents that book appointments, answer questions, handle leads — powered by VAPI.</p>
+          <a href="#contact" class="mt-8 inline-flex text-sm font-medium text-cyan transition group-hover:translate-x-1">Learn More →</a>
+        </article>
+        <article class="reveal group rounded-[2rem] border border-white/10 bg-panel p-7 transition duration-300 hover:-translate-y-1 hover:border-cyan/30 hover:shadow-glow">
+          <div class="text-3xl">💻</div>
+          <h3 class="mt-6 text-xl font-semibold text-white">Vibe Coding / Web Apps</h3>
+          <p class="mt-4 text-sm leading-7 text-white/65">Full-stack apps built fast with Claude Code, Lovable, Cursor, and Supabase. From idea to deployed in days.</p>
+          <a href="#contact" class="mt-8 inline-flex text-sm font-medium text-cyan transition group-hover:translate-x-1">Learn More →</a>
+        </article>
+        <article class="reveal group rounded-[2rem] border border-white/10 bg-panel p-7 transition duration-300 hover:-translate-y-1 hover:border-cyan/30 hover:shadow-glow">
+          <div class="text-3xl">🔗</div>
+          <h3 class="mt-6 text-xl font-semibold text-white">CRM &amp; Business Automation</h3>
+          <p class="mt-4 text-sm leading-7 text-white/65">GoHighLevel, Notion, Airtable integrations. Your whole business running on autopilot.</p>
+          <a href="#contact" class="mt-8 inline-flex text-sm font-medium text-cyan transition group-hover:translate-x-1">Learn More →</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="projects" class="mx-auto w-[92%] max-w-7xl py-24">
+      <div class="reveal mb-12">
+        <p class="mb-4 text-sm uppercase tracking-[0.35em] text-cyan/80">Featured Projects</p>
+        <h2 class="text-3xl font-bold text-white sm:text-4xl">A portfolio tailored to the clients Noks wants to win.</h2>
+      </div>
+
+      <div class="grid gap-6 lg:grid-cols-3">
+        <article class="reveal rounded-[2rem] border border-white/10 bg-panel p-7">
+          <div class="mb-6 h-1 w-full rounded-full bg-gradient-to-r from-cyan via-teal to-mint"></div>
+          <h3 class="text-2xl font-semibold text-white">Dental Clinic Management App</h3>
+          <p class="mt-4 text-sm leading-7 text-white/65">Full-stack web app for dental clinics. Patient management, appointment booking, doctor scheduling — all powered by Supabase + n8n + VAPI voice receptionist.</p>
+          <div class="mt-6 flex flex-wrap gap-2">
+            <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">Next.js</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">Supabase</span>
+            <span class="rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs text-cyan">VAPI</span>
+            <span class="rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs text-cyan">n8n</span>
+          </div>
+          <a href="#contact" class="mt-8 inline-flex text-sm font-medium text-cyan">View Project →</a>
+        </article>
+
+        <article class="reveal rounded-[2rem] border border-white/10 bg-panel p-7">
+          <div class="mb-6 h-1 w-full rounded-full bg-gradient-to-r from-cyan via-teal to-mint"></div>
+          <h3 class="text-2xl font-semibold text-white">AI Voice Receptionist</h3>
+          <p class="mt-4 text-sm leading-7 text-white/65">24/7 AI phone agent for a local business. Handles inbound calls, books appointments, qualifies leads automatically.</p>
+          <div class="mt-6 flex flex-wrap gap-2">
+            <span class="rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs text-cyan">VAPI</span>
+            <span class="rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs text-cyan">n8n</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">GoHighLevel</span>
+          </div>
+          <a href="#contact" class="mt-8 inline-flex text-sm font-medium text-cyan">View Project →</a>
+        </article>
+
+        <article class="reveal rounded-[2rem] border border-white/10 bg-panel p-7">
+          <div class="mb-6 h-1 w-full rounded-full bg-gradient-to-r from-cyan via-teal to-mint"></div>
+          <h3 class="text-2xl font-semibold text-white">Business Automation Suite</h3>
+          <p class="mt-4 text-sm leading-7 text-white/65">End-to-end automation for a service business: lead capture → CRM → follow-up emails → reporting. Zero manual work.</p>
+          <div class="mt-6 flex flex-wrap gap-2">
+            <span class="rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs text-cyan">n8n</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">Make.com</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">Airtable</span>
+            <span class="rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs text-cyan">AI</span>
+          </div>
+          <a href="#contact" class="mt-8 inline-flex text-sm font-medium text-cyan">View Project →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="mx-auto w-[92%] max-w-7xl py-24">
+      <div class="reveal mb-12">
+        <p class="mb-4 text-sm uppercase tracking-[0.35em] text-cyan/80">Testimonials</p>
+        <h2 class="text-3xl font-bold text-white sm:text-4xl">Proof that automation should pay for itself.</h2>
+      </div>
+      <!-- Real testimonials can be added later. -->
+      <div class="grid gap-6 lg:grid-cols-3">
+        <article class="reveal rounded-[2rem] border border-white/10 bg-white/[0.03] p-7">
+          <p class="text-base leading-8 text-white/78">“Noks built our automation in 2 days. We saved 15 hours a week immediately.”</p>
+          <p class="mt-6 text-sm text-cyan">Sarah M., Clinic Owner</p>
+        </article>
+        <article class="reveal rounded-[2rem] border border-white/10 bg-white/[0.03] p-7">
+          <p class="text-base leading-8 text-white/78">“The voice AI receptionist paid for itself in the first week.”</p>
+          <p class="mt-6 text-sm text-cyan">James R., Agency Owner</p>
+        </article>
+        <article class="reveal rounded-[2rem] border border-white/10 bg-white/[0.03] p-7">
+          <p class="text-base leading-8 text-white/78">“Fast communication, clean systems, and real business impact. Exactly what we needed.”</p>
+          <p class="mt-6 text-sm text-cyan">Placeholder Client, Service Business</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="mx-auto w-[92%] max-w-7xl py-24">
+      <div class="reveal overflow-hidden rounded-[2.25rem] border border-cyan/20 bg-gradient-to-r from-cyan/20 via-slateGlow to-ink p-8 shadow-glow sm:p-12">
+        <p class="text-sm uppercase tracking-[0.35em] text-cyan/80">Ready to automate your business?</p>
+        <h2 class="mt-4 max-w-3xl text-3xl font-bold text-white sm:text-5xl">Let's build something that works while you sleep.</h2>
+        <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
+          <a href="https://www.upwork.com" target="_blank" rel="noreferrer" class="rounded-full bg-cyan px-7 py-4 text-center font-semibold text-ink transition hover:scale-[1.02] hover:bg-white">
+            Hire Me on Upwork →
+          </a>
+          <p class="text-sm text-white/75">Also available via email: <a href="mailto:noks@example.com" class="text-cyan">noks@example.com</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-white/10">
+    <div class="mx-auto flex w-[92%] max-w-7xl flex-col gap-8 py-8 md:flex-row md:items-center md:justify-between">
+      <a href="#top" class="text-lg font-bold text-white">⚡ Noks</a>
+      <div class="flex flex-wrap gap-5 text-sm text-white/65">
+        <a href="#about" class="transition hover:text-cyan">About</a>
+        <a href="#services" class="transition hover:text-cyan">Services</a>
+        <a href="#projects" class="transition hover:text-cyan">Projects</a>
+      </div>
+      <div class="flex items-center gap-3 text-lg text-white/75">
+        <a href="https://www.upwork.com" target="_blank" rel="noreferrer" aria-label="Upwork" class="rounded-full border border-white/10 bg-white/5 px-3 py-2 transition hover:border-cyan/30 hover:text-cyan">◉</a>
+        <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn" class="rounded-full border border-white/10 bg-white/5 px-3 py-2 transition hover:border-cyan/30 hover:text-cyan">in</a>
+        <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X" class="rounded-full border border-white/10 bg-white/5 px-3 py-2 transition hover:border-cyan/30 hover:text-cyan">𝕏</a>
+        <a href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub" class="rounded-full border border-white/10 bg-white/5 px-3 py-2 transition hover:border-cyan/30 hover:text-cyan">⌘</a>
+      </div>
+    </div>
+    <div class="border-t border-white/10 py-5 text-center text-sm text-white/45">Built with ⚡ by Noks · 2026</div>
+  </footer>
+
+  <script>
+    const menuButton = document.getElementById("menuButton");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const navbar = document.getElementById("navbar");
+    const particleRoot = document.getElementById("particles");
+
+    menuButton.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+
+    document.querySelectorAll('#mobileMenu a[href^="#"]').forEach((link) => {
+      link.addEventListener("click", () => mobileMenu.classList.add("hidden"));
+    });
+
+    window.addEventListener("scroll", () => {
+      navbar.classList.toggle("nav-scrolled", window.scrollY > 12);
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.16 });
+
+    document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
+
+    const particleCount = window.innerWidth < 768 ? 18 : 34;
+    for (let i = 0; i < particleCount; i += 1) {
+      const dot = document.createElement("span");
+      const size = Math.random() * 3 + 1;
+      dot.className = "particle";
+      dot.style.width = size + "px";
+      dot.style.height = size + "px";
+      dot.style.left = Math.random() * 100 + "%";
+      dot.style.top = Math.random() * 100 + "%";
+      dot.style.opacity = (Math.random() * 0.7 + 0.2).toFixed(2);
+      dot.style.animation = `float ${Math.random() * 4 + 4}s ease-in-out ${Math.random() * 3}s infinite`;
+      particleRoot.appendChild(dot);
+    }
+  </script>
+</body>
+</html>

@@ -188,9 +188,15 @@
       border-color: rgba(14, 165, 233, 0.9);
     }
 
-    .scramble-char {
-      color: #0ea5e9;
-      opacity: 0.7;
+    .hero-title {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hero-title.is-visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .typewriter-cursor {
@@ -299,7 +305,7 @@
             Available for work ✅
           </div>
           <p class="mb-5 text-sm uppercase tracking-[0.35em] text-cyan/80">AI Automation Engineer · Bosnia and Herzegovina</p>
-          <h1 class="max-w-5xl text-5xl font-extrabold leading-[0.95] tracking-tight text-white sm:text-6xl lg:text-8xl">
+          <h1 class="hero-title max-w-5xl text-5xl font-extrabold leading-[0.95] tracking-tight text-white sm:text-6xl lg:text-8xl" style="opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease;">
             I Build AI Systems That Work While You Sleep
           </h1>
           <p id="heroSubtitle" class="mt-6 max-w-3xl text-base text-white/68 sm:text-lg" data-text="n8n automation · Voice AI Receptionists · Claude Code · Full-Stack Apps">
@@ -510,69 +516,11 @@
     const menuButton = document.getElementById("menuButton");
     const mobileMenu = document.getElementById("mobileMenu");
     const navbar = document.getElementById("navbar");
-    const heroTitle = document.querySelector("h1");
     const heroSubtitle = document.getElementById("heroSubtitle");
     const particleRoot = document.getElementById("particles");
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const navLinks = Array.from(document.querySelectorAll('header nav a[href^="#"]'));
     const pageSections = Array.from(document.querySelectorAll("main section[id]"));
-
-    class TextScramble {
-      constructor(el) {
-        this.el = el;
-        this.chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%!";
-        this.update = this.update.bind(this);
-      }
-
-      setText(newText) {
-        const old = this.el.innerText;
-        const length = Math.max(old.length, newText.length);
-        const promise = new Promise((resolve) => {
-          this.resolve = resolve;
-        });
-        this.queue = [];
-        for (let i = 0; i < length; i += 1) {
-          const from = old[i] || "";
-          const to = newText[i] || "";
-          const start = Math.floor((i / Math.max(length, 1)) * 45);
-          const end = start + 18;
-          this.queue.push({ from, to, start, end });
-        }
-        cancelAnimationFrame(this.frameRequest);
-        this.frame = 0;
-        this.update();
-        return promise;
-      }
-
-      update() {
-        let output = "";
-        let complete = 0;
-        for (let i = 0; i < this.queue.length; i += 1) {
-          const item = this.queue[i];
-          const { from, to, start, end } = item;
-          if (this.frame >= end) {
-            complete += 1;
-            output += to;
-          } else if (this.frame >= start) {
-            if (!item.char || Math.random() < 0.28) {
-              item.char = this.chars[Math.floor(Math.random() * this.chars.length)];
-            }
-            output += `<span class="scramble-char">${item.char}</span>`;
-          } else {
-            output += from;
-          }
-        }
-
-        this.el.innerHTML = output;
-
-        if (complete === this.queue.length) {
-          this.resolve();
-        } else {
-          this.frame += 1;
-          this.frameRequest = requestAnimationFrame(this.update);
-        }
-      }
-    }
 
     const easeOutQuad = (t) => 1 - (1 - t) * (1 - t);
 
@@ -911,22 +859,13 @@
     }
 
     async function initHeroText() {
-      if (!heroTitle) {
-        return;
-      }
-
-      const finalTitle = heroTitle.textContent.trim();
-
-      if (prefersReducedMotion.matches) {
-        heroTitle.textContent = finalTitle;
-        if (heroSubtitle) {
-          heroSubtitle.textContent = heroSubtitle.dataset.text || "";
-        }
-        return;
-      }
-
-      const scramble = new TextScramble(heroTitle);
-      await scramble.setText(finalTitle);
+      const titleEl = document.querySelector(".hero-title");
+      if (!titleEl) return;
+      // Short delay then fade in
+      setTimeout(() => {
+        titleEl.classList.add("is-visible");
+      }, 150);
+      // Then run subtitle typewriter
       await typeSubtitle();
     }
 
